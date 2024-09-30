@@ -1,0 +1,78 @@
+<div class="p-6 bg-gray-50">
+  <div class="flex justify-between mb-4">
+    <div class="flex space-x-4">
+      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="setLanguage('kz')">
+        {{ languageService.getLanguage() === 'kz' ? 'Қазақша' : 'Казахский' }}
+      </button>
+      <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" (click)="setLanguage('ru')">
+        {{ languageService.getLanguage() === 'kz' ? 'Орысша' : 'Русский' }}
+      </button>
+    </div>
+    <button class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" (click)="openAddDialog()">
+      {{ languageService.getLanguage() === 'kz' ? 'қосу' : 'Добавить' }}
+    </button>
+  </div>
+
+  <div class="mb-4">
+    <input
+      type="text"
+      placeholder="{{ languageService.getLanguage() === 'kz' ? 'Аты бойынша іздеу' : 'Поиск по наименованию' }}"
+      [(ngModel)]="searchTerm"
+      (input)="filterDetectors()"
+      class="border border-gray-300 rounded px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+    />
+  </div>
+
+  <table class="min-w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+    <thead class="bg-gray-100">
+    <tr>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">{{ languageService.getLanguage() === 'kz' ? 'Атауы' : 'Наименование' }}</th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">{{ languageService.getLanguage() === 'kz' ? 'Саны' : 'Количество' }}</th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">
+        {{ languageService.getLanguage() === 'kz' ? 'Өндірілген ел' : 'Страна производства' }}
+        <select [(ngModel)]="selectedCountryId" (change)="filterDetectors()" class="ml-2 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="">{{ languageService.getLanguage() === 'kz' ? 'Барлығы' : 'Все' }}</option>
+          <option *ngFor="let country of countries" [value]="country.id">
+            {{ languageService.getLanguage() === 'kz' ? country.nameKaz : country.nameRus }}
+          </option>
+        </select>
+      </th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">
+        {{ languageService.getLanguage() === 'kz' ? 'Металл іздегіш түрі' : 'Тип металлоискателя' }}
+        <select [(ngModel)]="selectedTypeId" (change)="filterDetectors()" class="ml-2 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="">{{ languageService.getLanguage() === 'kz' ? 'Барлығы' : 'Все' }}</option>
+          <option *ngFor="let type of types" [value]="type.id">{{ languageService.getLanguage() === 'kz' ? type.nameKaz : type.nameRus }}</option>
+        </select>
+      </th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">
+        {{ languageService.getLanguage() === 'kz' ? 'Қолжетімділік күйі' : 'Статус наличия' }}
+        <select [(ngModel)]="selectedAvailabilityId" (change)="filterDetectors()" class="ml-2 border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option *ngFor="let availability of availabilities" [value]="availability.id">
+            {{ languageService.getLanguage() === 'kz' ? availability.nameKaz : availability.nameRus }}
+          </option>
+        </select>
+      </th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b">{{ languageService.getLanguage() === 'kz' ? 'Шығарылған жылы' : 'Год производства' }}</th>
+      <th class="text-left px-6 py-4 font-medium text-gray-700 border-b"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let detector of filteredDetectors" class="hover:bg-gray-50">
+      <td class="px-6 py-4 border-b">{{ detector?.brand }}</td>
+      <td class="px-6 py-4 border-b">{{ detector?.count }}</td>
+      <td class="px-6 py-4 border-b">{{ languageService.getLanguage() === 'kz' ? detector?.countryManufactureNameKaz : detector?.countryManufactureNameRus }}</td>
+      <td class="px-6 py-4 border-b">{{ languageService.getLanguage() === 'kz' ? detector?.typeMetalDetectorsNameKaz : detector?.typeMetalDetectorsNameRus }}</td>
+      <td class="px-6 py-4 border-b">{{ languageService.getLanguage() === 'kz' ? detector?.availabilityNameKaz : detector?.availabilityNameRus }}</td>
+      <td class="px-6 py-4 border-b">{{ detector?.yearIssue }}</td>
+      <td class="px-6 py-4 border-b flex space-x-2">
+        <button class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600" (click)="openFormDialog(detector)">
+          {{ languageService.getLanguage() === 'kz' ? 'Өңдеу' : 'Редактировать' }}
+        </button>
+        <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600" (click)="metalDetectorDelete(detector.id)">
+          {{ languageService.getLanguage() === 'kz' ? 'Жою' : 'Удалить' }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

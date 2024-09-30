@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>{{ data.detector ? 'Редактировать' : 'Добавить' }} металлоискатель</h1>
+<div mat-dialog-content>
+  <form [formGroup]="metalDetectorForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Наименование</mat-label>
+      <input matInput formControlName="brand" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Количество</mat-label>
+      <input matInput type="number" formControlName="count" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Год производства</mat-label>
+      <input matInput formControlName="yearIssue" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Тип металлоискателя</mat-label>
+      <mat-select formControlName="typeMetalDetectorsId">
+        <mat-option *ngFor="let type of data.types" [value]="type.id">
+          {{ type.nameKaz }} / {{ type.nameRus }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Страна производства</mat-label>
+      <mat-select formControlName="countryManufactureId">
+        <mat-option *ngFor="let country of data.countries" [value]="country.id">
+          {{ country.nameKaz }} / {{ country.nameRus }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Статус наличия</mat-label>
+      <mat-select formControlName="availabilityId">
+        <mat-option *ngFor="let availability of data.availabilities" [value]="availability.id">
+          {{ availability.nameKaz }} / {{ availability.nameRus }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Отмена</button>
+  <button mat-button (click)="onSave()" [disabled]="metalDetectorForm.invalid">Сохранить</button>
+</div>
+
